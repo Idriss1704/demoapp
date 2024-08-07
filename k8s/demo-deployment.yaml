@@ -14,7 +14,6 @@ spec:
       labels:
         app: demoapp
     spec:
-      serviceAccountName: lenneflow-sa
       containers:
       - name: demoapp
         image: idriss1704/demoapp
@@ -27,38 +26,3 @@ spec:
           limits:
             cpu: "1.0"
             memory: 300Mi
-        readinessProbe:
-            httpGet:
-              port: 8080
-              path: /actuator/health
-            initialDelaySeconds: 60
-            timeoutSeconds: 2
-            periodSeconds: 20
-            failureThreshold: 5
-        livenessProbe:
-            httpGet:
-              port: 8080
-              path: /actuator/info
-            initialDelaySeconds: 60
-            timeoutSeconds: 2
-            periodSeconds: 20
-            failureThreshold: 5
-        volumeMounts:
-            - name: mongodb
-              mountPath: /etc/secretspot
-        #            - name: config
-        #              mountPath: /etc/appconfig
-        env:
-          - name: SPRING_CLOUD_BOOTSTRAP_ENABLED
-            value: "true"
-          - name: SPRING_CLOUD_KUBERNETES_SECRETS_ENABLEAPI
-            value: "true"
-#          - name: SPRING_CONFIG_IMPORT
-#            value: "kubernetes:"
-      volumes:
-        - name: mongodb
-          secret:
-            secretName: demoapp
-      #        - name: config
-      #          configMap:
-      #            name: department
